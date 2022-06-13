@@ -12,14 +12,14 @@ app.get('/home', (req, res) => {
 })
 
 let boardgames = [ //name, max_players, category, avg_rating
-    {name: 'Gloomhaven'},
-    {name: 'Pandemic Legacy: Season 1'},
-    {name: 'Brass: Birmingham'},
-    {name: 'Terraforming Mars'},
-    {name: 'Twilight Imperium: Fourth Edition'},
-    {name: 'Spirit Island'},
-    {name: 'Mage Knight'},
-    {name: 'Rising Sun'}
+    { name: 'Gloomhaven', max_players: 4, category: 'Adventure', avg_rating: 8.8 },
+    { name: 'Pandemic Legacy: Season 1', max_players: 4, category: 'Cooperative', avg_rating: 8.62 },
+    { name: 'Brass: Birmingham', max_players: 4, category: 'Economic', avg_rating: 8.66 },
+    { name: 'Terraforming Mars', max_players: 5, category: 'Economic', avg_rating: 8.43 },
+    { name: 'Twilight Imperium: Fourth Edition', max_players: 6, category: 'Strategy', avg_rating: 8.7 },
+    { name: 'Spirit Island', max_players: 4, category: 'Cooperative', avg_rating: 8.34 },
+    { name: 'Mage Knight', max_players: 4, category: 'Adventure', avg_rating: 8.1 },
+    { name: 'Rising Sun', max_players: 5, category: 'Strategy', avg_rating: 7.88 }
 ]
 
 let reviews = [];
@@ -39,8 +39,22 @@ app.get('/boardgames/total', (req, res) => {
     res.send(`${boardgames.length}`)
 })
 
+// Task 6
+app.get('/boardgames/category', (req, res) => {
+    console.log(req.query)
+    const category = req.query.category
+    let games = []
+    for (let i = 0; i < boardgames.length; i++) {
+        const game = boardgames[i];
+        if (game.category === category) {
+            games.push(game.name)
+        }
+    }
+    res.json({ games })
+})
+
 // Task 5b
-app.get('/boardgames/:index(\\d+)', (req, res) => {
+app.get('/boardgames/:index', (req, res) => {
     console.log(req.params.index)
     res.send(boardgames[req.params.index].name)
 })
