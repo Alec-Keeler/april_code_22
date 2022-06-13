@@ -34,6 +34,17 @@ app.get(['/boardgames', '/games'], (req, res) => {
     res.json({names})
 })
 
+// Task 5a
+app.get('/boardgames/total', (req, res) => {
+    res.send(`${boardgames.length}`)
+})
+
+// Task 5b
+app.get('/boardgames/:index(\\d+)', (req, res) => {
+    console.log(req.params.index)
+    res.send(boardgames[req.params.index].name)
+})
+
 // Task 4
 app.post('/reviews', (req, res) => {
     console.log(req.body)
