@@ -4,6 +4,7 @@ const app = express();
 
 // Task 4a
 app.use(express.json()) //next()
+app.use(express.static('public'))  // link(rel="stylesheet", href="/css/test.css")
 
 // Task 7c
 app.use((req, res, next) => {
