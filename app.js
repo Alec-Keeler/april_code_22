@@ -4,6 +4,9 @@ const app = express();
 const reviewsRouter = require('./routes/reviews');
 const boardgamesRouter = require('./routes/boardgames');
 
+// Task 11
+require('dotenv').config()
+
 // Task 4a
 app.use(express.json()) //next()
 app.use(express.static('public'))  // link(rel="stylesheet", href="/css/test.css")
@@ -135,5 +138,7 @@ app.use((err, req, res, next) => {
 })
 
 // Task 1b
-const port = 8080;
+// const port = 8080;
+// Task 11
+const port = process.env.PORT
 app.listen(port, () => console.log(`Listening on port ${port}...`))
