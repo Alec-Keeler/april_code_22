@@ -6,10 +6,17 @@ const app = express();
 app.use(express.json()) //next()
 app.use(express.static('public'))  // link(rel="stylesheet", href="/css/test.css")
 
+
 // Task 7c
 app.use((req, res, next) => {
     console.log(`Path: ${req.path}, Method: ${req.method}`)
-    next()
+    req.banana = true
+    if (req.path === '/banana') {
+        const err = new Error('What is with banana???')
+        next(err)
+    } else {
+        next()
+    }
 })
 
 // Task 2a
@@ -45,6 +52,7 @@ app.get(['/boardgames', '/games'], (req, res) => {
 
 // Task 5a
 app.get('/boardgames/total', (req, res) => {
+    console.log(req.banana)
     res.send(`${boardgames.length}`)
 })
 
@@ -103,7 +111,24 @@ app.post('/reviews', contentCheck, gameIndexCheck, (req, res) => {
     res.json({message: "Success", reviews})
 })
 
+app.use((req, res, next) => {
+    console.log('Inside final middleware')
+    const err = new Error('The page you were looking for could not be found :(')
+    err.status = 404
+    next(err)
+})
 
+
+app.use((req, res, next) => {
+    console.log('HOW DID I GET HERE?')
+    next()
+})
+
+app.use((err, req, res, next) => {
+    console.log('Status:', err.status, err.message)
+    res.send('There was an error')
+    // next(err)
+})
 
 // Task 1b
 const port = 8080;
