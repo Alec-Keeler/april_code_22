@@ -3,7 +3,13 @@ const express = require('express');
 const app = express();
 
 // Task 4a
-app.use(express.json())
+app.use(express.json()) //next()
+
+// Task 7c
+app.use((req, res, next) => {
+    console.log(`Path: ${req.path}, Method: ${req.method}`)
+    next()
+})
 
 // Task 2a
 app.get('/home', (req, res) => {
@@ -34,6 +40,8 @@ app.get(['/boardgames', '/games'], (req, res) => {
     res.json({names})
 })
 
+
+
 // Task 5a
 app.get('/boardgames/total', (req, res) => {
     res.send(`${boardgames.length}`)
@@ -59,12 +67,41 @@ app.get('/boardgames/:index', (req, res) => {
     res.send(boardgames[req.params.index].name)
 })
 
+app.post('/boardgames', (req, res) => {
+    boardgames.push(req.body)
+    res.status(201)
+    // res.contentType('application/json')
+    res.json(boardgames)
+    // res.send(boardgames)
+})
+
+// Task 7a
+const contentCheck = (req, res, next) => {
+    const content = req.body.content;
+    if (content.length < 5)  {
+        res.send('Please provide a longer review')
+    } else {
+        next()
+    }
+}
+
+const gameIndexCheck = (req, res, next) => {
+    const gameId = req.body.gameId
+    const totalGames = boardgames.length
+    if (gameId < totalGames) {
+        next()
+    } else {
+        res.send('Please provide a valid gameId')
+    }
+}
+
 // Task 4
-app.post('/reviews', (req, res) => {
+app.post('/reviews', contentCheck, gameIndexCheck, (req, res) => {
     console.log(req.body)
     reviews.push(req.body)
     res.json({message: "Success", reviews})
 })
+
 
 
 // Task 1b
